@@ -1,0 +1,19 @@
+{
+    "name": "forseti/logger",
+    "description": "Monolog",
+    "require": {
+        "monolog/monolog": "^1.18"
+    },
+    "authors": [
+        {
+            "name": "Diego Saouda",
+            "email": "diego.saouda@forseit.com.br"
+        }
+    ],
+
+    "autoload": {
+        "psr-4": {
+            "Forseti\\Logger\\": "src"
+        }
+    }
+}
