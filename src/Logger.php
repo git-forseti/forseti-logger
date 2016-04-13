@@ -15,12 +15,12 @@ class Logger extends \Monolog\Logger
     {
         parent::__construct($class);
         $stream = new StreamHandler(
-            $this->env('RECAPCHA_LOGGER_STREAM', 'php://stdout'),
-            $this->env('RECAPCHA_LOGGER_LEVEL', \Monolog\Logger::INFO)
+            $this->env('FORSETI_LOGGER_STREAM', 'php://stdout'),
+            $this->env('FORSETI_LOGGER_LEVEL', \Monolog\Logger::INFO)
         );
         $lineFormatter = new LineFormatter(
-            $this->env('RECAPCHA_LOGGER_FORMAT'),
-            $this->env('RECAPCHA_LOGGER_DATEFORMAT', 'Y-m-d H:i:s.u'),
+            $this->env('FORSETI_LOGGER_FORMAT'),
+            $this->env('FORSETI_LOGGER_DATEFORMAT', 'Y-m-d H:i:s.u'),
             false,
             true
         );
