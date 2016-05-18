@@ -1,6 +1,11 @@
 {
     "name": "forseti/logger",
-    "description": "Monolog",
+    "description": "Forseti Logger facilita a utilizaçao de log na forseti",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "forseti",
+        "logger"
+    ],
     "require": {
         "monolog/monolog": "^1.18"
     },
