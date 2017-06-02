@@ -1,7 +1,9 @@
 <?php
 namespace Forseti\Logger;
 
+use Monolog\ErrorHandler;
 use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\RavenHandler;
 use Monolog\Handler\StreamHandler;
 
 class Logger extends \Monolog\Logger
@@ -26,6 +28,7 @@ class Logger extends \Monolog\Logger
         );
         $stream->setFormatter($lineFormatter);
         $this->pushHandler($stream);
+        $this->useSentry();
     }
 
     /**
@@ -39,5 +42,20 @@ class Logger extends \Monolog\Logger
         $value = (trim(strtolower($value)) === 'true') ? true : $value;
         $value = (trim(strtolower($value)) === 'false') ? false : $value;
         return $value ?: $default;
+    }
+
+    private function useSentry()
+    {
+        $sentryDNS = $this->env('FORSETI_SENTRY_DNS');
+
+        if ($sentryDNS) {
+            $client = new \Raven_Client($sentryDNS);
+            $handler = new RavenHandler($client);
+            $handler->setLevel($this->env('FORSETI_SENTRY_LOGGER_LEVEL', Logger::WARNING));
+            var_dump($handler->getLevel());
+            $handler->setFormatter(new LineFormatter("%message% %context% %extra%\n"));
+            $this->pushHandler($handler);
+            ErrorHandler::register($this);
+        }
     }
 }
