@@ -52,7 +52,6 @@ class Logger extends \Monolog\Logger
             $client = new \Raven_Client($sentryDNS);
             $handler = new RavenHandler($client);
             $handler->setLevel($this->env('FORSETI_SENTRY_LOGGER_LEVEL', Logger::WARNING));
-            var_dump($handler->getLevel());
             $handler->setFormatter(new LineFormatter("%message% %context% %extra%\n"));
             $this->pushHandler($handler);
             ErrorHandler::register($this);
