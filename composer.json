@@ -7,7 +7,7 @@
         "logger"
     ],
     "require": {
-        "monolog/monolog": "^1.18"
+        "monolog/monolog": "^1.22"
     },
     "authors": [
         {
