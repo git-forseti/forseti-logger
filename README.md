@@ -23,5 +23,5 @@ Por padrão o symfony console vira o gerenciador de exception, por isso é neces
 
 ```php
 $app = new \Symfony\Component\Console\Application('Portal', '1.0.0');
-$app->setCatchExceptions($config["console_exception"]);
+$app->setCatchExceptions(false);
 ```
