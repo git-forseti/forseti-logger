@@ -8,7 +8,9 @@ use Monolog\Handler\StreamHandler;
 
 class Logger extends \Monolog\Logger
 {
-
+    /**
+     * @var RavenHandler
+     */
     private static $sentryHandler;
 
     /**
@@ -46,7 +48,7 @@ class Logger extends \Monolog\Logger
             return;
         }
 
-        //instânciando uma única vez o sentry e gerando apenas um error handler no sistema
+        //instanciando uma única vez o sentry e gerando apenas um error handler no sistema
         if (self::$sentryHandler === null) {
             $client = new \Raven_Client($sentryDNS);
             $handler = new RavenHandler($client);
@@ -60,7 +62,11 @@ class Logger extends \Monolog\Logger
 
             $errorHandlerLogger = new \Monolog\Logger('error.handler');
             $errorHandlerLogger->pushHandler($stream);
+            $errorHandlerLogger->pushHandler(self::$sentryHandler);
 
+            //tomar cuidado para gerar apenas um error handler
+            //se não todos os errors handler vão ser executados
+            //gerando uma confusão de erros no monolog
             ErrorHandler::register($this);
         }
 
