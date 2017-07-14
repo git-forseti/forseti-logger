@@ -6,6 +6,9 @@ putenv('FORSETI_SENTRY_DNS=https://5e8b5929ee114897bc5fed17d54fbb34:2cda421e4338
 putenv('FORSETI_SENTRY_LOGGER_LEVEL=' . Monolog\Logger::ERROR);
 
 $logger = new \Forseti\Logger\Logger('teste');
-$logger->info('mostrar na tela');
+$logger->error('error 1');
+
+$logger2 = new \Forseti\Logger\Logger('teste2');
+$logger2->error('error 2');
 
 throw new Exception('sentry error');
