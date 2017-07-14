@@ -9,6 +9,11 @@
     "require": {
         "monolog/monolog": "^1.22"
     },
+
+    "suggest": {
+        "sentry/sentry": "Enviar erros para o sentry"
+    },
+
     "authors": [
         {
             "name": "Diego Saouda",
