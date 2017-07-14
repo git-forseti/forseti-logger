@@ -8,10 +8,8 @@ use Monolog\Handler\StreamHandler;
 
 class Logger extends \Monolog\Logger
 {
-    /**
-     * @var RavenHandler
-     */
-    private static $sentryHandler;
+
+    private static $hasErrorHandler = false;
 
     /**
      * Logger constructor.
@@ -48,29 +46,34 @@ class Logger extends \Monolog\Logger
             return;
         }
 
-        //instanciando uma única vez o sentry e gerando apenas um error handler no sistema
-        if (self::$sentryHandler === null) {
-            $client = new \Raven_Client($sentryDNS);
-            $handler = new RavenHandler($client);
-            $handler->setLevel($this->env('FORSETI_SENTRY_LOGGER_LEVEL', Logger::WARNING));
-            $handler->setFormatter(new LineFormatter("%message% %context% %extra%\n"));
-            self::$sentryHandler = $handler;
+        $client = new \Raven_Client($sentryDNS);
+        $handler = new RavenHandler($client);
+        $handler->setLevel($this->env('FORSETI_SENTRY_LOGGER_LEVEL', Logger::WARNING));
+        $handler->setFormatter(new LineFormatter("%message% %context% %extra%\n"));
 
-            $stream = $this->newStreamHandler();
-            $lineFormatter = $this->newLineFormatter();
-            $stream->setFormatter($lineFormatter);
+        $this->pushHandler($handler);
+        $this->registerErrorHandler($handler);
+    }
 
-            $errorHandlerLogger = new \Monolog\Logger('error.handler');
-            $errorHandlerLogger->pushHandler($stream);
-            $errorHandlerLogger->pushHandler(self::$sentryHandler);
-
-            //tomar cuidado para gerar apenas um error handler
-            //se não todos os errors handler vão ser executados
-            //gerando uma confusão de erros no monolog
-            ErrorHandler::register($errorHandlerLogger);
+    private function registerErrorHandler($sentryHandler)
+    {
+        if (self::$hasErrorHandler) {
+            return ;
         }
 
-        $this->pushHandler(self::$sentryHandler);
+        $stream = $this->newStreamHandler();
+        $lineFormatter = $this->newLineFormatter();
+        $stream->setFormatter($lineFormatter);
+
+        $errorHandlerLogger = new \Monolog\Logger('error.handler');
+        $errorHandlerLogger->pushHandler($stream);
+        $errorHandlerLogger->pushHandler($sentryHandler);
+
+        //tomar cuidado para gerar apenas um error handler
+        //se não todos os errors handler vão ser executados
+        //gerando uma confusão de erros no monolog
+        ErrorHandler::register($errorHandlerLogger);
+        self::$hasErrorHandler = true;
     }
 
     /**
