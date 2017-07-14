@@ -67,7 +67,7 @@ class Logger extends \Monolog\Logger
             //tomar cuidado para gerar apenas um error handler
             //se não todos os errors handler vão ser executados
             //gerando uma confusão de erros no monolog
-            ErrorHandler::register($this);
+            ErrorHandler::register($errorHandlerLogger);
         }
 
         $this->pushHandler(self::$sentryHandler);
