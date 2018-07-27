@@ -16,11 +16,19 @@ class Logger extends \Monolog\Logger
 
         $this->pushHandler($stream);
         $this->useSentry();
+        $this->useLoggly();
     }
 
     private function useSentry()
     {
         if ($handler = SentryHandlerFactory::create()) {
+            $this->pushHandler($handler);
+        }
+    }
+
+    private function useLoggly()
+    {
+        if ($handler = LogglyHandlerFactory::create()) {
             $this->pushHandler($handler);
         }
     }

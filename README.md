@@ -33,3 +33,10 @@ Por padrão o symfony console vira o gerenciador de exception, por isso é neces
 $app = new \Symfony\Component\Console\Application('Portal', '1.0.0');
 $app->setCatchExceptions(false);
 ```
+
+# Usando Loggly
+
+Coloque no seu projeto
+
+putenv('FORSETI_LOGGLY_TOKEN=');
+putenv('FORSETI_LOGGLY_LEVEL=' . \Monolog\Logger::INFO);
