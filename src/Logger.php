@@ -1,4 +1,5 @@
 <?php
+
 namespace Forseti\Logger;
 
 class Logger extends \Monolog\Logger
@@ -17,6 +18,7 @@ class Logger extends \Monolog\Logger
         $this->pushHandler($stream);
         $this->useSentry();
         $this->useLoggly();
+        $this->logToFile();
     }
 
     private function useSentry()
@@ -29,6 +31,13 @@ class Logger extends \Monolog\Logger
     private function useLoggly()
     {
         if ($handler = LogglyHandlerFactory::create()) {
+            $this->pushHandler($handler);
+        }
+    }
+
+    private function logToFile()
+    {
+        if ($handler = FileHandlerFactory::create()) {
             $this->pushHandler($handler);
         }
     }

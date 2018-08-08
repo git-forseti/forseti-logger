@@ -40,3 +40,28 @@ Coloque no seu projeto
 
 putenv('FORSETI_LOGGLY_TOKEN=');
 putenv('FORSETI_LOGGLY_LEVEL=' . \Monolog\Logger::INFO);
+
+# Logando no arquivo
+
+É necessário obrigatório definir a variável de ambiente **FORSETI_LOGGER_FILE**
+Exemplo:
+```php
+putenv('FORSETI_LOGGER_FILE='. __DIR__ . '/resources/log_de_test.log');
+```
+
+Opcionalmente é possível:
+
+- Alterar o nivel de log enviado para o arquivo. O padrão é DEBUG.
+```php
+putenv('FORSETI_LOGGER_FILE_LEVEL=' . \Monolog\Logger::INFO);
+```
+
+- Alterar o formato do log.
+```php
+putenv('FORSETI_LOGGER_FORMAT=' . "[%datetime%] %channel%.%level_name%: %message% %context% %extra%\n");
+```
+ 
+- Alterar o formato do timestamp.
+```php
+putenv('FORSETI_LOGGER_DATEFORMAT=' . 'Y-m-d H:i:s');
+```
